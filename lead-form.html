@@ -44,16 +44,16 @@
     <input name="name" placeholder="Name" required />
     <input name="email" type="email" placeholder="Email" required />
     <input name="phone" placeholder="Phone" required />
-    <input name="truck_count" type="number" placeholder="# of Trucks" required />
-    <input name="engine_year" type="number" placeholder="Engine Year" required />
+    <input name="truck_count" type="number" placeholder="# of Trucks" />
+    <input name="engine_year" type="number" placeholder="Engine Year" />
     <input name="dot_number" placeholder="DOT Number (optional)" />
-    <select name="fleet_type" required>
+    <select name="fleet_type">
       <option value="">Fleet Type</option>
       <option value="private">Private</option>
       <option value="public">Public</option>
       <option value="contractor">Contractor</option>
     </select>
-    <select name="received_carb_notice" required>
+    <select name="received_carb_notice">
       <option value="">Received CARB Notice?</option>
       <option value="yes">Yes</option>
       <option value="no">No</option>
@@ -83,13 +83,13 @@
       const formData = new FormData(form);
 
       // Checkbox fix: include value only if checked
-      formData.set("gvwr_over_14k", form.gvwr_over_14k.checked);
-      formData.set("operates_in_ca", form.operates_in_ca.checked);
+      formData.set("gvwr_over_14k", form.gvwr_over_14k.checked ? "true" : "false");
+      formData.set("operates_in_ca", form.operates_in_ca.checked ? "true" : "false");
 
       const leadData = Object.fromEntries(formData.entries());
 
       try {
-        const res = await fetch("https://your-fastapi-url.com/qualify-lead", {
+        const res = await fetch("https://your-fastapi-url.com/submit-lead", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(leadData)
