@@ -40,7 +40,7 @@
 <body>
 
   <form id="leadForm">
-    <h2>CARB Compliance Lead Intake</h2>
+    <h2>CARB CTC Scheduler</h2>
     <input name="name" placeholder="Name" required />
     <input name="email" type="email" placeholder="Email" required />
     <input name="phone" placeholder="Phone" required />
@@ -89,7 +89,7 @@
       const leadData = Object.fromEntries(formData.entries());
 
       try {
-        const res = await fetch("https://your-fastapi-url.com/submit-lead", {
+        const res = await fetch("https://carbwise-intake-1074394970558.us-central1.run.app/qualify-lead", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(leadData)
