@@ -88,6 +88,11 @@
 
       const leadData = Object.fromEntries(formData.entries());
 
+      const button = form.querySelector("button");
+      button.disabled = true;
+      const originalText = button.textContent;
+      button.textContent = "Submitting...";
+
       try {
         const res = await fetch("https://carbwise-intake-1074394970558.us-central1.run.app/qualify-lead", {
           method: "POST",
@@ -101,6 +106,9 @@
       } catch (err) {
         console.error("Error submitting lead:", err);
         alert("Something went wrong.");
+      } finally {
+        button.disabled = false;
+        button.textContent = originalText;
       }
     });
   </script>
