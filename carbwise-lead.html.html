@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carbwise Lead Form</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f8f8f8;
+    }
+    form {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="leadForm">
+    <h2>CARB Compliance Lead Intake</h2>
+    <input name="name" placeholder="Name" required />
+    <input name="email" type="email" placeholder="Email" required />
+    <input name="phone" placeholder="Phone" required />
+    <input name="truck_count" type="number" placeholder="# of Trucks" />
+    <input name="engine_year" type="number" placeholder="Engine Year" />
+    <input name="dot_number" placeholder="DOT Number (optional)" />
+    <select name="fleet_type">
+      <option value="">Fleet Type</option>
+      <option value="private">Private</option>
+      <option value="public">Public</option>
+      <option value="contractor">Contractor</option>
+    </select>
+    <select name="received_carb_notice">
+      <option value="">Received CARB Notice?</option>
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+    <select name="urgency" required>
+      <option value="">Urgency</option>
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <input name="location" placeholder="City/Location" required />
+    <label>
+      <input type="checkbox" name="gvwr_over_14k" checked />
+      GVWR over 14k lbs
+    </label>
+    <label>
+      <input type="checkbox" name="operates_in_ca" checked />
+      Operates in California
+    </label>
+    <button type="submit">Submit Lead</button>
+  </form>
+
+  <script>
+    document.getElementById("leadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      // Checkbox fix: include value only if checked
+      formData.set("gvwr_over_14k", form.gvwr_over_14k.checked ? "true" : "false");
+      formData.set("operates_in_ca", form.operates_in_ca.checked ? "true" : "false");
+
+      const leadData = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch("https://your-fastapi-url.com/submit-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(leadData)
+        });
+
+        const result = await res.json();
+        alert(result.message || "Lead submitted!");
+        form.reset();
+      } catch (err) {
+        console.error("Error submitting lead:", err);
+        alert("Something went wrong.");
+      }
+    });
+  </script>
+
+</body>
+</html>
